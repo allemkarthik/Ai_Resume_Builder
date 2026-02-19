@@ -7,10 +7,10 @@ const Header = () => {
         <div className="flex items-center gap-2">
           {/* Custom Logo */}
           <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center font-bold text-lg">
-            AI
+            <img src="/public/logo.svg"/>
           </div>
           <h1 className="text-xl font-semibold text-gray-800">
-            ResumeGen
+            AI Resume Generator
           </h1>
         </div>
 
