@@ -1,10 +1,14 @@
+import Header from "./Components/Header";
 import "./index.css";
-import Home from "./pages/Home";
+import CoverLetter from "./pages/CoverLetter";
+
 
 function App() {
   return <>
-  <h1>Resume builder</h1>
-  <Home/>
+  {/* <h1>Resume builder</h1> */}
+  <Header/>
+  
+  <CoverLetter/>
   </>;
 }
 
