@@ -2,6 +2,7 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./pages/Home";
 import CoverLetter from "./pages/CoverLetter";
+import Resume from "./pages/Resume";
 
 const appRouter = createHashRouter([
   {
@@ -22,6 +23,17 @@ const appRouter = createHashRouter([
         <Header />
         <main className="pt-16">
           <CoverLetter />
+        </main>
+      </>
+    ),
+  },
+  {
+    path: "/resume",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <Resume />
         </main>
       </>
     ),
