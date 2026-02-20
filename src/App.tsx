@@ -1,13 +1,35 @@
+import { createHashRouter, RouterProvider } from "react-router-dom";
+import Header from "./Components/Header";
+import Home from "./pages/Home";
+import CoverLetter from "./pages/CoverLetter";
 
-import { createRoot } from 'react-dom/client'
-import './index.css'
+const appRouter = createHashRouter([
+  {
+    path: "/",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <Home />
+        </main>
+      </>
+    ),
+  },
+  {
+    path: "/coverletter",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <CoverLetter />
+        </main>
+      </>
+    ),
+  },
+]);
 
-import Router from './Components/Router.tsx'
-import Header from './Components/Header.tsx'
+function App() {
+  return <RouterProvider router={appRouter} />;
+}
 
-createRoot(document.getElementById('root')!).render(
-  <div>
-    <Header/>
-    <Router/>
-  </div>
-)
+export default App;

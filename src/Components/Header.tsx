@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 const Header = () => {
   return (
-    <header className="w-full bg-white border-b border-gray-200 fixed z-10">
+    <header className="w-full bg-white border-b border-gray-200 fixed top-0">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         
         {/* Logo */}
@@ -18,7 +19,7 @@ const Header = () => {
         <nav>
           <ul className="flex items-center gap-8 text-sm font-medium text-gray-600">
             <li className="hover:text-black cursor-pointer transition">
-              Cover Letter
+              <Link to="/coverLetter">Cover Letter</Link>
             </li>
             <li className="hover:text-black cursor-pointer transition">
               ATS Score
