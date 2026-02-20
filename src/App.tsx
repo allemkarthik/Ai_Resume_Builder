@@ -1,15 +1,13 @@
-import Header from "./Components/Header";
-import "./index.css";
-import CoverLetter from "./pages/CoverLetter";
 
+import { createRoot } from 'react-dom/client'
+import './index.css'
 
-function App() {
-  return <>
-  {/* <h1>Resume builder</h1> */}
-  <Header/>
-  
-  <CoverLetter/>
-  </>;
-}
+import Router from './Components/Router.tsx'
+import Header from './Components/Header.tsx'
 
-export default App;
+createRoot(document.getElementById('root')!).render(
+  <div>
+    <Header/>
+    <Router/>
+  </div>
+)
