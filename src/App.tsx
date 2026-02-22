@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import CoverLetter from "./pages/CoverLetter";
 import Resume from "./pages/Resume";
 import Ats from "./pages/Ats";
+import ColdMail from "./pages/ColdMail";
 
 const appRouter = createHashRouter([
   {
@@ -51,7 +52,17 @@ const appRouter = createHashRouter([
       </>
     ),
   },
-  
+  {
+    path: "/coldemail",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <ColdMail />
+        </main>
+      </>
+    ),
+  },
 ]);
 
 function App() {

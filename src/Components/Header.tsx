@@ -25,7 +25,7 @@ const Header = () => {
               <Link to="/ats"> ATS Score</Link>
             </li>
             <li className="hover:text-black cursor-pointer transition">
-              Cold Email
+              <Link to="/coldemail">Cold Email</Link>
             </li>
 
             {/* Login Button */}
