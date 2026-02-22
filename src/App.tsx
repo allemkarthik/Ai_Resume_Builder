@@ -8,6 +8,8 @@ import ColdMail from "./pages/ColdMail";
 import Footer from "./Components/Footer";
 import About from "./pages/About";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsConditions";
+import Contact from "./pages/Contact";
 
 const appRouter = createHashRouter([
   {
@@ -85,6 +87,29 @@ const appRouter = createHashRouter([
         <Header />
         <main className="pt-16">
           <PrivacyPolicy />
+        </main>
+      </>
+    ),
+  },
+   {
+    path: "/t&c",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <TermsAndConditions/>
+        </main>
+      </>
+    ),
+  },
+  
+  {
+    path: "/contact",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <Contact/>
         </main>
       </>
     ),
