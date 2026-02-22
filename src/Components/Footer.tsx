@@ -39,12 +39,12 @@ const Footer = () => {
               Company
             </h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-white">About</a></li>
-              <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
+              <li><Link to="/about" className="hover:text-white">About</Link></li>
+              <li><Link to="/privacypolicy" className="hover:text-white">Privacy Policy</Link></li>
               <li><a href="#" className="hover:text-white">Terms & Conditions</a></li>
               <li><a href="#" className="hover:text-white">Contact</a></li>
             </ul>
-          </div>
+          </div>    
 
         </div>
 

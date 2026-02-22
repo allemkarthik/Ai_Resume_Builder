@@ -6,6 +6,8 @@ import Resume from "./pages/Resume";
 import Ats from "./pages/Ats";
 import ColdMail from "./pages/ColdMail";
 import Footer from "./Components/Footer";
+import About from "./pages/About";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const appRouter = createHashRouter([
   {
@@ -61,6 +63,28 @@ const appRouter = createHashRouter([
         <Header />
         <main className="pt-16">
           <ColdMail />
+        </main>
+      </>
+    ),
+  },
+  {
+    path: "/about",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <About />
+        </main>
+      </>
+    ),
+  },
+  {
+    path: "/privacypolicy",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <PrivacyPolicy />
         </main>
       </>
     ),
