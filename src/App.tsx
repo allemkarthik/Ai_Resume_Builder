@@ -3,6 +3,7 @@ import Header from "./Components/Header";
 import Home from "./pages/Home";
 import CoverLetter from "./pages/CoverLetter";
 import Resume from "./pages/Resume";
+import Ats from "./pages/Ats";
 
 const appRouter = createHashRouter([
   {
@@ -27,6 +28,7 @@ const appRouter = createHashRouter([
       </>
     ),
   },
+
   {
     path: "/resume",
     element: (
@@ -38,6 +40,18 @@ const appRouter = createHashRouter([
       </>
     ),
   },
+  {
+    path: "/ats",
+    element: (
+      <>
+        <Header />
+        <main className="pt-16">
+          <Ats />
+        </main>
+      </>
+    ),
+  },
+  
 ]);
 
 function App() {

@@ -22,7 +22,7 @@ const Header = () => {
               <Link to="/coverLetter">Cover Letter</Link>
             </li>
             <li className="hover:text-black cursor-pointer transition">
-              ATS Score
+              <Link to="/ats"> ATS Score</Link>
             </li>
             <li className="hover:text-black cursor-pointer transition">
               Cold Email
