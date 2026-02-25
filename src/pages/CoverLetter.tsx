@@ -1,4 +1,5 @@
 import { useState } from "react";
+import download from "../Components/DownloadPDF";
 
 const CoverLetter = () => {
   const [companyName, setCompanyName] = useState<string>("");
@@ -31,24 +32,27 @@ Job Description: ${jobDescription}
 `;
 
       const res = await fetch("http://localhost:5000/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt }),
-    });
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
 
       const data = await res.json();
       setResult(data.result);
     } catch (err) {
-      setError("Failed to generate cover letter. Try again.");
+      setError("Failed to generate cover letter. Try again." + err);
     } finally {
       setLoading(false);
     }
   };
 
+  const downloadpdf=()=>{
+    <download 
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 px-6 pt-24">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        
         {/* LEFT */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h1 className="text-2xl font-bold mb-2">AI Cover Letter</h1>
@@ -105,6 +109,14 @@ Job Description: ${jobDescription}
         {/* RIGHT */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="font-semibold mb-4">Generated Cover Letter</h2>
+          {result && (
+            <button
+              onClick={downloadpdf}
+              className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+            >
+              Download as PDF 📄
+            </button>
+          )}
 
           {!result && (
             <p className="text-gray-400 italic">

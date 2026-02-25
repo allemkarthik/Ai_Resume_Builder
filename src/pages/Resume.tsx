@@ -1,96 +1,126 @@
-import React from 'react'
+import React, { useState } from "react";
 
 const Resume = () => {
-  return (
-    <div>
-      <div className="min-h-screen bg-gray-100 px-6 pt-24">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState<"fresher" | "experienced">("fresher");
+  const [jobDes, setJobDesc] = useState("");
+  const [resume, setResume] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState("");
 
-        {/* LEFT: FORM */}
+  const generateResume = async () => {
+    if (!company || !jobDes || !resume) {
+      setError("Company name, job description & resume are required.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const prompt = `
+Act as a senior hiring manager.
+Write a professional ATS-optimized resume.
+Avoid generic phrases.
+Keep it under 300 words.
+
+Candidate type: ${role}
+Company: ${company}
+Job Description: ${jobDes}
+Previous Resume: ${resume}
+`;
+
+      const res = await fetch("http://localhost:5000/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+
+      const data = await res.json();
+      setResult(data.result);
+    } catch (err) {
+      setError("Failed to generate resume. Try again."+err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 px-6 pt-24">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* LEFT */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-1">
             AI Resume Generator
           </h1>
-          <p className="text-gray-500 text-sm mb-6">
-            Generate a professional Resume using AI
-          </p>
+
+          {error && (
+            <p className="text-red-500 text-sm mb-3">{error}</p>
+          )}
 
           <form className="space-y-4">
-            {/* Company Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Company Name
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Google"
-                className="mt-1 w-full rounded-md border border-gray-300 p-2"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="Company Name"
+              className="w-full border p-2 rounded"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+            />
 
-            {/* Applying As */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Applying As
-              </label>
-              <select className="mt-1 w-full rounded-md border border-gray-300 p-2">
-                <option value="fresher">Fresher</option>
-                <option value="experienced">Experienced</option>
-              </select>
-            </div>
+            <select
+              className="w-full border p-2 rounded"
+              value={role}
+              onChange={(e) => setRole(e.target.value as any)}
+            >
+              <option value="fresher">Fresher</option>
+              <option value="experienced">Experienced</option>
+            </select>
 
-            
+            <textarea
+              rows={4}
+              className="w-full border p-2 rounded"
+              placeholder="Job description"
+              value={jobDes}
+              onChange={(e) => setJobDesc(e.target.value)}
+            />
 
-            {/* Job Description */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Job Description
-              </label>
-              <textarea
-                rows={4}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2"
-                placeholder="Paste the job description here..."
-              />
-            </div>
-
-            {/* Resume content */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Your Sample Resume for Details
-              </label>
-              <textarea
-                rows={4}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2"
-                placeholder="Paste the resume details here..."
-              />
-            </div>
+            <textarea
+              rows={4}
+              className="w-full border p-2 rounded"
+              placeholder="Paste resume"
+              value={resume}
+              onChange={(e) => setResume(e.target.value)}
+            />
 
             <button
               type="button"
-              className="w-full bg-black text-white py-2 rounded-md font-semibold hover:bg-gray-800 transition"
+              className="w-full bg-black text-white py-2 rounded"
+              onClick={generateResume}
+              disabled={loading}
             >
-              Generate Resume
+              {loading ? "Generating..." : "Generate Resume"}
             </button>
           </form>
         </div>
 
-        {/* RIGHT: PREVIEW */}
-        <div className="bg-white rounded-xl shadow-md p-6 h-[100%] overflow-y-auto sticky top-10">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Generated AI Resume
+        {/* RIGHT */}
+        <div className="bg-white rounded-xl shadow-md p-6 overflow-y-auto">
+          <h2 className="text-lg font-semibold mb-4">
+            Generated Resume
           </h2>
 
-          <p className="text-gray-400 text-sm italic">
-            Your AI-generated Resume will appear here.
-          </p>
-
-          {/* Later this becomes API response */}
+          {result ? (
+            <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+          ) : (
+            <p className="text-gray-400 italic">
+              Your AI-generated resume will appear here.
+            </p>
+          )}
         </div>
-
       </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default Resume
+export default Resume;
