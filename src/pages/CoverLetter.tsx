@@ -1,86 +1,123 @@
+import { useState } from "react";
+
 const CoverLetter = () => {
+  const [companyName, setCompanyName] = useState<string>("");
+  const [role, setRole] = useState("fresher");
+  const [tone, setTone] = useState("formal");
+  const [jobDescription, setJobDescription] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState("");
+
+  const generateCoverLetter = async () => {
+    if (!companyName || !jobDescription) {
+      setError("Company name and job description are required.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const prompt = `
+Act as a senior hiring manager.
+Write a professional ATS-optimized cover letter.
+Avoid generic phrases.
+Keep it under 300 words.
+Tone: ${tone}
+Candidate type: ${role}
+Company: ${companyName}
+Job Description: ${jobDescription}
+`;
+
+      const res = await fetch("http://localhost:5000/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+
+      const data = await res.json();
+      setResult(data.result);
+    } catch (err) {
+      setError("Failed to generate cover letter. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 px-6 pt-24">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-
-        {/* LEFT: FORM */}
+        
+        {/* LEFT */}
         <div className="bg-white rounded-xl shadow-md p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-1">
-            AI Cover Letter
-          </h1>
+          <h1 className="text-2xl font-bold mb-2">AI Cover Letter</h1>
           <p className="text-gray-500 text-sm mb-6">
-            Generate a professional cover letter using AI
+            Generate a job-ready cover letter using AI
           </p>
 
-          <form className="space-y-4">
-            {/* Company Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Company Name
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Google"
-                className="mt-1 w-full rounded-md border border-gray-300 p-2"
-              />
-            </div>
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Company name"
+              className="w-full border p-2 rounded"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+            />
 
-            {/* Applying As */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Applying As
-              </label>
-              <select className="mt-1 w-full rounded-md border border-gray-300 p-2">
-                <option value="fresher">Fresher</option>
-                <option value="experienced">Experienced</option>
-              </select>
-            </div>
+            <select
+              className="w-full border p-2 rounded"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="fresher">Fresher</option>
+              <option value="experienced">Experienced</option>
+            </select>
 
-            {/* Tone */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Cover Letter Tone
-              </label>
-              <select className="mt-1 w-full rounded-md border border-gray-300 p-2">
-                <option value="formal">Formal</option>
-                <option value="informal">Informal</option>
-              </select>
-            </div>
+            <select
+              className="w-full border p-2 rounded"
+              value={tone}
+              onChange={(e) => setTone(e.target.value)}
+            >
+              <option value="formal">Formal</option>
+              <option value="informal">Informal</option>
+            </select>
 
-            {/* Job Description */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Job Description
-              </label>
-              <textarea
-                rows={4}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2"
-                placeholder="Paste the job description here..."
-              />
-            </div>
+            <textarea
+              rows={5}
+              placeholder="Paste job description..."
+              className="w-full border p-2 rounded"
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+            />
+
+            {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <button
-              type="button"
-              className="w-full bg-black text-white py-2 rounded-md font-semibold hover:bg-gray-800 transition"
+              onClick={generateCoverLetter}
+              className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
             >
-              Generate Cover Letter
+              {loading ? "Generating..." : "Generate Cover Letter"}
             </button>
-          </form>
+          </div>
         </div>
 
-        {/* RIGHT: PREVIEW */}
-        <div className="bg-white rounded-xl shadow-md p-6 h-[100%] overflow-y-auto sticky top-10">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Generated Cover Letter
-          </h2>
+        {/* RIGHT */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <h2 className="font-semibold mb-4">Generated Cover Letter</h2>
 
-          <p className="text-gray-400 text-sm italic">
-            Your AI-generated cover letter will appear here.
-          </p>
+          {!result && (
+            <p className="text-gray-400 italic">
+              Your AI-generated content will appear here.
+            </p>
+          )}
 
-          {/* Later this becomes API response */}
+          {result && (
+            <div className="bg-gray-100 p-4 rounded whitespace-pre-wrap">
+              {result}
+            </div>
+          )}
         </div>
-
       </div>
     </div>
   );
