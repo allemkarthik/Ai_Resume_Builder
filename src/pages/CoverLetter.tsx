@@ -125,14 +125,7 @@ Job Description: ${jobDescription}
         {/* RIGHT */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="font-semibold mb-4">Generated Cover Letter</h2>
-          {result && (
-            <button
-              onClick={downloadPDF}
-              className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
-            >
-              Download as PDF 📄
-            </button>
-          )}
+          
 
           {!result && (
             <p className="text-gray-400 italic">
@@ -144,6 +137,15 @@ Job Description: ${jobDescription}
             <div className="bg-gray-100 p-4 rounded whitespace-pre-wrap">
               {result}
             </div>
+          )}
+          {/* download button */}
+          {result && (
+            <button
+              onClick={downloadPDF}
+              className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+            >
+              Download as PDF 📄
+            </button>
           )}
         </div>
       </div>

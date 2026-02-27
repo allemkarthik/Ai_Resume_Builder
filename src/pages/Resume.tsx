@@ -20,11 +20,54 @@ const Resume = () => {
 
     try {
       const prompt = `
-Act as a senior hiring manager.
-Write a professional ATS-optimized resume.
-Avoid generic phrases.
-Keep it under 300 words.
+You are a senior hiring manager and ATS optimization specialist.
 
+Your task is to REBUILD the candidate’s resume from scratch using only relevant information from the provided resume.
+
+CRITICAL RULES:
+- Do NOT copy headings or irrelevant sections from the original resume.
+- Do NOT include internship program titles, qualification requirements, or job posting content.
+- Do NOT fabricate metrics or experience.
+- Remove redundant, weak, or generic phrases.
+- Convert responsibilities into measurable impact statements when possible.
+- Improve clarity, professionalism, and structure.
+- Output ONLY the final resume.
+- No explanations.
+- No markdown formatting.
+- No bold text.
+- No special symbols.
+- Clean spacing between sections.
+- ATS friendly plain text.
+- Maximum 400 words.
+- keep horizontal black border line from left to right for each section
+
+STRUCTURE (strictly follow):
+
+FULL NAME
+City, State
+Phone | Email | LinkedIn | Portfolio
+
+PROFESSIONAL SUMMARY
+2–3 lines focused on technical strengths and measurable impact.
+
+TECHNICAL SKILLS
+Grouped clearly by category.
+
+PROFESSIONAL EXPERIENCE
+Job Title – Company – Duration
+• Impact-driven bullet
+• Impact-driven bullet
+• Impact-driven bullet
+
+PROJECTS
+Project Name
+• Impact-driven bullet
+• Impact-driven bullet
+
+EDUCATION
+Degree – Institution – Graduation Date – GPA (if strong)
+
+Now rebuild the resume using ONLY relevant content from below:
 Candidate type: ${role}
 Company: ${company}
 Job Description: ${jobDes}
