@@ -1,5 +1,5 @@
 import { useState } from "react";
-import download from "../Components/DownloadPDF";
+import jsPDF from "jspdf";
 
 const CoverLetter = () => {
   const [companyName, setCompanyName] = useState<string>("");
@@ -46,9 +46,25 @@ Job Description: ${jobDescription}
     }
   };
 
-  const downloadpdf=()=>{
-    <download 
-  }
+ const downloadPDF = () => {
+  if (!result) return;
+
+  const doc = new jsPDF();
+
+  doc.setFont("Times", "Normal");
+  doc.setFontSize(12);
+
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const margin = 15;
+  const maxWidth = pageWidth - margin * 2;
+
+  doc.text(result, margin, 20, {
+    maxWidth,
+    align: "left"
+  });
+
+  doc.save("AI_Resume.pdf");
+};
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 pt-24">
@@ -111,7 +127,7 @@ Job Description: ${jobDescription}
           <h2 className="font-semibold mb-4">Generated Cover Letter</h2>
           {result && (
             <button
-              onClick={downloadpdf}
+              onClick={downloadPDF}
               className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
             >
               Download as PDF 📄
