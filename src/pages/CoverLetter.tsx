@@ -69,7 +69,7 @@ Job Description: ${jobDescription}
   return (
     <div className="min-h-screen bg-gray-100 px-6 pt-24">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* LEFT */}
+        {/* inputs */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h1 className="text-2xl font-bold mb-2">AI Cover Letter</h1>
           <p className="text-gray-500 text-sm mb-6">
@@ -122,7 +122,7 @@ Job Description: ${jobDescription}
           </div>
         </div>
 
-        {/* RIGHT */}
+        {/* output*/}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="font-semibold mb-4">Generated Cover Letter</h2>
           

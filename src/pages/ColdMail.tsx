@@ -43,7 +43,7 @@ based on Job Description ${jobDesc}
   return (
     <div className="min-h-screen bg-gray-50 pt-24 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* LEFT: Job Description */}
+        {/*  Job Description */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">
             Paste Job Description
@@ -68,7 +68,7 @@ based on Job Description ${jobDesc}
           </button>
         </div>
 
-        {/* RIGHT: Generated Email */}
+        {/*  Generated Email */}
         <div className="bg-white rounded-xl shadow-md p-6 flex flex-col">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">
             Your Cold Email
