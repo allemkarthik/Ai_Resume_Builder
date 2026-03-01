@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import {  useState } from "react";
+import useDownloadPdf from "../hooks/useDownloadPdf";
 
 const Resume = () => {
   const [company, setCompany] = useState("");
@@ -8,6 +9,8 @@ const Resume = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState("");
+
+  const downloadpdf=useDownloadPdf(result,"Resume.pdf")
 
   const generateResume = async () => {
     if (!company || !jobDes || !resume) {
@@ -83,7 +86,7 @@ Previous Resume: ${resume}
       const data = await res.json();
       setResult(data.result);
     } catch (err) {
-      setError("Failed to generate resume. Try again."+err);
+      setError("Failed to generate resume. Try again." + err);
     } finally {
       setLoading(false);
     }
@@ -98,9 +101,7 @@ Previous Resume: ${resume}
             AI Resume Generator
           </h1>
 
-          {error && (
-            <p className="text-red-500 text-sm mb-3">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
           <form className="space-y-4">
             <input
@@ -149,9 +150,7 @@ Previous Resume: ${resume}
 
         {/* RIGHT */}
         <div className="bg-white rounded-xl shadow-md p-6 overflow-y-auto">
-          <h2 className="text-lg font-semibold mb-4">
-            Generated Resume
-          </h2>
+          <h2 className="text-lg font-semibold mb-4">Generated Resume</h2>
 
           {result ? (
             <pre className="whitespace-pre-wrap text-sm">{result}</pre>
@@ -159,6 +158,15 @@ Previous Resume: ${resume}
             <p className="text-gray-400 italic">
               Your AI-generated resume will appear here.
             </p>
+          )}
+          {result && (
+            <button
+              onClick={downloadpdf}
+              className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+            >
+              {" "}
+              Download as PDF 📄
+            </button>
           )}
         </div>
       </div>

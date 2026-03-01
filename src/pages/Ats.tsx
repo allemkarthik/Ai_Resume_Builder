@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setATSResult } from "../store/atsSlice";
 import type { RootState } from "../store/appStore";
@@ -7,8 +7,8 @@ type ATSResponse = {
   score: number;
   missingSkills: string[];
   recommendations: string[];
-  resume: string; // for caching
-  jobDescription: string; // for caching
+  resume: string; 
+  jobDescription: string; 
 };
 
 const Ats = () => {
@@ -66,7 +66,7 @@ JOB DESCRIPTION: ${jobDesc}
 
     // Avoid unnecessary api calls if Redux already has this exact data
     if (score !== null && cachedResume === resumeText && cachedJD === jobDescription) {
-      console.log("Using cached ATS result from Redux");
+      setError("your ATS Result is already Fetched");
       return;
     }
 
@@ -108,7 +108,7 @@ JOB DESCRIPTION: ${jobDesc}
         throw new Error("Malformed AI response");
       }
 
-      const safeScore = Math.min(Math.max(parsedData.score, 0), 100);
+      const safeScore = Math.min(Math.max(parsedData.score*100, 0), 100);
 
       // Dispatch action
       dispatch(

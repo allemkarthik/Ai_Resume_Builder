@@ -1,5 +1,5 @@
 import { useState } from "react";
-import jsPDF from "jspdf";
+import useDownloadPdf from "../hooks/useDownloadPdf";
 
 const CoverLetter = () => {
   const [companyName, setCompanyName] = useState<string>("");
@@ -9,6 +9,8 @@ const CoverLetter = () => {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState("");
+
+  const downloadpdf=useDownloadPdf(result, "CoverLetter.pdf")
 
   const generateCoverLetter = async () => {
     if (!companyName || !jobDescription) {
@@ -46,25 +48,7 @@ Job Description: ${jobDescription}
     }
   };
 
- const downloadPDF = () => {
-  if (!result) return;
 
-  const doc = new jsPDF();
-
-  doc.setFont("Times", "Normal");
-  doc.setFontSize(12);
-
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const margin = 15;
-  const maxWidth = pageWidth - margin * 2;
-
-  doc.text(result, margin, 20, {
-    maxWidth,
-    align: "left"
-  });
-
-  doc.save("AI_Resume.pdf");
-};
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 pt-24">
@@ -141,7 +125,7 @@ Job Description: ${jobDescription}
           {/* download button */}
           {result && (
             <button
-              onClick={downloadPDF}
+              onClick={downloadpdf}
               className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
             >
               Download as PDF 📄

@@ -1,4 +1,5 @@
 import  { useState } from "react";
+import useDownloadPdf from "../hooks/useDownloadPdf";
 
 
 const ColdMail = () => {
@@ -6,6 +7,7 @@ const ColdMail = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, seterror] = useState("");
   const [result, setresult] = useState();
+  const downloadpdf=useDownloadPdf(result,"ColdEmail.pdf")
 
   const generateColdEmail = async () => {
     if (!jobDesc) {
@@ -80,6 +82,15 @@ based on Job Description ${jobDesc}
           {!result && <p className="text-gray-400 italic">Your Ai generated email will apper here....</p>}
           {result && (
             <div className="bg-gray-100 p-4 rounded whitespace-pre-wrap">{result}</div>
+          )}
+
+          {result && (
+            <button
+              onClick={downloadpdf}
+              className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+            >
+              Download as PDF 📄
+            </button>
           )}
 
           
