@@ -1,43 +1,37 @@
-import { log } from "console";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setATSResult } from "../store/atsSlice";
+import type { RootState } from "../store/appStore";
 
-// Define the JSON structure we expect from LLM
 type ATSResponse = {
-  score: number; // 0-100
+  score: number;
   missingSkills: string[];
   recommendations: string[];
 };
 
 const Ats = () => {
+  const dispatch = useDispatch();
+
+  const { score, missingSkills, recommendations } = useSelector(
+    (state: RootState) => state.ats
+  );
+
   const [resumeText, setResumeText] = useState<string>("");
   const [jobDescription, setJobDescription] = useState<string>("");
-  const [score, setScore] = useState<number | null>(null);
-  const [missingSkills, setMissingSkills] = useState<string[]>([]);
-  const [recommendations, setRecommendations] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Function to generate the prompt for LLM
   const generatePrompt = (resume: string, jobDesc: string) => {
     return `
-You are an Applicant Tracking System (ATS) analyzer and senior technical recruiter.
+You are an Applicant Tracking System (ATS) analyzer.
 
-Evaluate the resume against the provided job description.
-
-STRICT RULES:
-- Do NOT rewrite the resume.
-- Do NOT fabricate skills or experience.
-- Only analyze based on the provided content.
-- Be objective and data-driven.
-- Return ONLY valid JSON in this exact structure:
+Return ONLY valid JSON:
 
 {
-  "score": number,            // ATS match score 0–100
-  "missingSkills": string[],  // List of important missing skills
-  "recommendations": string[] // Improvement tips
+  "score": number,
+  "missingSkills": string[],
+  "recommendations": string[]
 }
-
-Do not include explanations outside JSON, markdown, or extra text.
 
 RESUME:
 ${resume}
@@ -47,7 +41,6 @@ ${jobDesc}
 `;
   };
 
-  // Calculate color for score ring
   const getScoreColor = (value: number) => {
     if (value >= 80) return "text-green-600";
     if (value >= 60) return "text-yellow-500";
@@ -61,71 +54,110 @@ ${jobDesc}
   };
 
   const handleCheck = async () => {
-    if (!resumeText || !jobDescription) {
-      setError("Please provide both resume and job description.");
-      return;
+  if (!resumeText.trim() || !jobDescription.trim()) {
+    setError("Please provide both resume and job description.");
+    return;
+  }
+
+  setLoading(true);
+  setError(null);
+
+  try {
+    const prompt = generatePrompt(resumeText, jobDescription);
+
+    const response = await fetch("http://localhost:5000/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Server error");
     }
 
-    setLoading(true);
-    setError(null);
+    const outerData = await response.json();
 
-    try {
-      const prompt = generatePrompt(resumeText, jobDescription);
+    // Handle different backend formats
+    let rawResult =
+      typeof outerData.result === "string"
+        ? outerData.result
+        : JSON.stringify(outerData);
 
-      const response = await fetch("http://localhost:5000/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
-      // console.log(response.json())
+    // Remove markdown formatting if present
+    rawResult = rawResult
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
 
-      // Parse JSON response from LLM
-      const data: ATSResponse = await response.json();
+    // Extract only JSON object (extra safety)
+    const jsonMatch = rawResult.match(/\{[\s\S]*\}/);
 
-      // Safely clamp score
-      const safeScore =
-        typeof data.score === "number" && !isNaN(data.score)
-          ? Math.min(Math.max(data.score, 0), 100)
-          : 0;
-
-      setScore(safeScore);
-      setMissingSkills(data.missingSkills || []);
-      setRecommendations(data.recommendations || []);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to analyze resume. Try again.");
-      setScore(null);
-      setMissingSkills([]);
-      setRecommendations([]);
-    } finally {
-      setLoading(false);
+    if (!jsonMatch) {
+      throw new Error("Invalid JSON response from AI");
     }
-  };
+
+    const parsedData: ATSResponse = JSON.parse(jsonMatch[0]);
+
+    // Validate structure
+    if (
+      typeof parsedData.score !== "number" ||
+      !Array.isArray(parsedData.missingSkills) ||
+      !Array.isArray(parsedData.recommendations)
+    ) {
+      throw new Error("Malformed AI response");
+    }
+
+    // Clamp score between 0–100
+    const safeScore = Math.min(Math.max(parsedData.score, 0), 100);
+
+    // Dispatch to Redux
+    dispatch(
+      setATSResult({
+        score: safeScore,
+        missingSkills: parsedData.missingSkills,
+        recommendations: parsedData.recommendations,
+      })
+    );
+  } catch (err) {
+    console.error("ATS Error:", err);
+    setError("Failed to analyze resume. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // SVG math (no hardcoded 440 anymore)
+  const radius = 70;
+  const circumference = 2 * Math.PI * radius;
+  const progressOffset =
+    score !== null
+      ? circumference - (circumference * score) / 100
+      : circumference;
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-xl p-8 grid md:grid-cols-2 gap-8">
-        {/* LEFT: Inputs */}
+        {/* LEFT */}
         <div>
           <h2 className="text-2xl font-bold mb-6">ATS Resume Checker</h2>
 
           <textarea
             placeholder="Paste your Resume..."
-            className="w-full h-40 p-3 border rounded-lg mb-4 focus:ring-2 focus:ring-black outline-none"
+            className="w-full h-40 p-3 border rounded-lg mb-4"
             value={resumeText}
             onChange={(e) => setResumeText(e.target.value)}
           />
 
           <textarea
             placeholder="Paste Job Description..."
-            className="w-full h-40 p-3 border rounded-lg mb-4 focus:ring-2 focus:ring-black outline-none"
+            className="w-full h-40 p-3 border rounded-lg mb-4"
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
           />
 
           <button
             onClick={handleCheck}
-            className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition"
+            className="w-full bg-black text-white py-3 rounded-lg"
           >
             {loading ? "Analyzing..." : "Check ATS Score"}
           </button>
@@ -133,7 +165,7 @@ ${jobDesc}
           {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
         </div>
 
-        {/* RIGHT: Results */}
+        {/* RIGHT */}
         <div className="flex flex-col items-center justify-start">
           {score !== null && !loading ? (
             <>
@@ -142,7 +174,7 @@ ${jobDesc}
                   <circle
                     cx="80"
                     cy="80"
-                    r="70"
+                    r={radius}
                     stroke="#e5e7eb"
                     strokeWidth="10"
                     fill="transparent"
@@ -150,12 +182,12 @@ ${jobDesc}
                   <circle
                     cx="80"
                     cy="80"
-                    r="70"
+                    r={radius}
                     stroke="black"
                     strokeWidth="10"
                     fill="transparent"
-                    strokeDasharray={440}
-                    strokeDashoffset={440 - (440 * score) / 100}
+                    strokeDasharray={circumference}
+                    strokeDashoffset={progressOffset}
                     strokeLinecap="round"
                   />
                 </svg>

@@ -10,6 +10,8 @@ import About from "./pages/About";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsConditions";
 import Contact from "./pages/Contact";
+import { Provider } from "react-redux";
+import appStore from "./store/appStore";
 
 const appRouter = createHashRouter([
   {
@@ -117,7 +119,7 @@ const appRouter = createHashRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={appRouter} />;
+  return <Provider store={appStore}><RouterProvider router={appRouter} /></Provider>;
 }
 
 export default App;
