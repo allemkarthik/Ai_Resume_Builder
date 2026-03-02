@@ -7,7 +7,7 @@ const ColdMail = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, seterror] = useState("");
   const [result, setresult] = useState();
-  const downloadpdf=useDownloadPdf(result,"ColdEmail.pdf")
+  const downloadpdf=useDownloadPdf(result || "","ColdEmail.pdf")
 
   const generateColdEmail = async () => {
     if (!jobDesc) {
@@ -34,7 +34,7 @@ based on Job Description ${jobDesc}
       });
 
       const data = await res.json();
-      setresult(data.result);
+      setresult(data.result || "");
     } catch (err) {
       seterror("Failed to generate cover letter. Try again." + err);
     }
