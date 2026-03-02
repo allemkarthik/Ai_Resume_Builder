@@ -19,7 +19,7 @@ const ColdMail = () => {
 
     try {
       const prompt = `
-      Act as a senior hiring manager.
+      Act as a cold email generator for recruters for reference.
 Write a professional ATS-optimized cold email for recruters for referall.
 Avoid generic phrases.
 Keep it under 200 words.
@@ -27,7 +27,7 @@ based on Job Description ${jobDesc}
 
       `;
 
-      const res = await fetch("http://localhost:5000/api/generate", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),

@@ -33,7 +33,7 @@ Company: ${companyName}
 Job Description: ${jobDescription}
 `;
 
-      const res = await fetch("http://localhost:5000/api/generate", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),

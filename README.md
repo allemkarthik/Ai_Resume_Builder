@@ -1,73 +1,124 @@
-# React + TypeScript + Vite
+# 🚀 AI Resume Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered full-stack web application that generates ATS-optimized resumes and personalized cover letters using LLMs.
 
-Currently, two official plugins are available:
+🔗 **Live Demo:** https://your-frontend-url.vercel.app  
+🔗 **Backend API:** https://ai-resume-builder-1-igpe.onrender.com  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 📸 Screenshots
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### 🏠 Home Page
+![Home](./src/assets/Screenshot%202026-03-02%20002135.png)
 
-## Expanding the ESLint configuration
+### 📄 Resume Generator
+![Resume Generator](./src/assets/Screenshot%202026-03-02%20002205.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### ✉️ Cover Letter Generator
+![Cover Letter](./src/assets/Screenshot%202026-03-02%20002310.png)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### ✉️ Ats Score
+![ATS checker](./src/assets/Screenshot%202026-03-02%20002429.png)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### ✉️ Cold Email
+![COld Email](./src/assets/Screenshot%202026-03-02%20002513.png)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ✨ Features
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- 🤖 AI-generated ATS-friendly resumes
+- ✉️ Custom cover letter generation
+- 📊 Resume scoring & optimization
+- 🔐 Secure backend API integration
+- 🌐 Fully deployed (Frontend + Backend)
+- ⚡ Fast and responsive UI
+
+---
+
+## 🏗️ Tech Stack
+
+### Frontend
+- React (Vite)
+- TypeScript
+- Tailwind CSS
+- Axios / Fetch API
+
+### Backend
+- Node.js
+- Express
+- TypeScript
+- REST API Architecture
+
+### AI Integration
+- OpenAI / Groq API
+
+### Deployment
+- Frontend: Vercel
+- Backend: Render
+
+---
+
+## 🏛️ Architecture
+---
+
+## ⚙️ Installation (Local Setup)
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/your-username/ai-resume-builder.git
+cd ai-resume-builder
+
+---
+###  Frontend Setup
+- npm install
+- npm run dev
+
+
+### Backend Setup
+- cd server
+- npm install
+- npx ts-node index.ts
+
+
+🧠 What I Learned
+
+Building full-stack apps with TypeScript
+
+Production deployment (Render + Vercel)
+
+Environment variable management
+
+Handling CORS & API integrations
+
+Structuring scalable backend architecture
+
+Integrating LLM APIs effectively
+
+
+🎯 Future Improvements
+
+Resume download as PDF
+
+Authentication system
+
+Save resume history
+
+Admin analytics dashboard
+
+Custom resume templates
+
+
+👨‍💻 Author
+
+Karthik Allem
+
+Passionate about building AI-powered full-stack applications that solve real-world problems.
+
+
+⭐ If you like this project
+
+Give it a star ⭐ on GitHub!
