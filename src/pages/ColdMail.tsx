@@ -20,7 +20,7 @@ const ColdMail = () => {
     try {
       const prompt = `
       Act as a senior hiring manager.
-Write a professional ATS-optimized cold email for recruters.
+Write a professional ATS-optimized cold email for recruters for referall.
 Avoid generic phrases.
 Keep it under 200 words.
 based on Job Description ${jobDesc}
